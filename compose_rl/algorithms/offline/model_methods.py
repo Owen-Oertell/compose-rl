@@ -280,7 +280,7 @@ def offline_loss(
                 logits_end = first_num_bins_logits[i, segment[1]+1, :] # TODO: double check if segment[1] or segment[1]+1
 
                 print(logits_start.shape)
-                print(logits_start)
+                print(torch.softmax(logits_start,dim=0).dot(bin_values))
 
                 # use pre-computed arange tensor
                 # below is the implementation we wanted:
