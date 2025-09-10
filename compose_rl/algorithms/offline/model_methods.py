@@ -244,6 +244,8 @@ def offline_loss(
         losses = (reward_q - beta2 * torch.log(torch.tensor(beta2)) - 1 - beta2 * (policy_logp - ref_logp)) ** 2
     
     elif loss_type == RegressionOfflineEnum.APO_CRITIC:
+
+        print(batch['vstar_rewards'])
         # grab necessaryinformation for this actor-critic style APO loss:
         first_num_bins_logits = batch.get('aux_first_num_bins_logits', None) # from the auxiliary distributional value function model
         assert first_num_bins_logits is not None, 'must have a value model that returns the first num_bins logits'
