@@ -278,7 +278,10 @@ def offline_loss(
                 seg_ref_logp = torch.sum(ref_token_policy_logps[i][segment[0]:segment[1]+1])
                 logits_start = first_num_bins_logits[i, segment[0], :]
                 logits_end = first_num_bins_logits[i, segment[1]+1, :] # TODO: double check if segment[1] or segment[1]+1
-                
+
+                print(logits_start.shape)
+                print(logits_start)
+
                 # use pre-computed arange tensor
                 # below is the implementation we wanted:
                 vstar_start = beta1*torch.log(torch.softmax(logits_start,dim=0).dot(torch.exp(bin_values/beta1)))
