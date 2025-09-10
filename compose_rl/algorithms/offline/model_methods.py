@@ -296,7 +296,7 @@ def offline_loss(
                 segment_losses.append(segment_loss)
                 print((vstar_end - vstar_start).detach())
                 advantages[i] += (vstar_end - vstar_start).detach()
-            
+            print("final reward", batch['reward'][i])
             # Accumulate losses across segments for this batch item and average advantage
             if segment_losses:
                 losses[i] = torch.stack(segment_losses).mean()  # Average loss across segments
