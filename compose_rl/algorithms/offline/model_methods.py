@@ -245,7 +245,7 @@ def offline_loss(
     
     elif loss_type == RegressionOfflineEnum.APO_CRITIC:
 
-        print(batch['vstar_rewards'])
+        print("VSTAR", batch['vstar_rewards'])
         # grab necessaryinformation for this actor-critic style APO loss:
         first_num_bins_logits = batch.get('aux_first_num_bins_logits', None) # from the auxiliary distributional value function model
         assert first_num_bins_logits is not None, 'must have a value model that returns the first num_bins logits'
