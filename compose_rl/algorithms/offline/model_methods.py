@@ -281,6 +281,7 @@ def offline_loss(
 
                 print(logits_start.shape)
                 print(torch.softmax(logits_start,dim=0).dot(bin_values))
+                print(torch.softmax(logits_end,dim=0).dot(bin_values))
 
                 # use pre-computed arange tensor
                 # below is the implementation we wanted:
@@ -293,6 +294,7 @@ def offline_loss(
                 #vstar_end = beta1*torch.log(torch.sum(torch.softmax(logits_end,dim=0)*torch.exp(bin_values/beta1)))
                 segment_loss = (beta2 * (seg_logp - seg_ref_logp) - (vstar_end - vstar_start))**2
                 segment_losses.append(segment_loss)
+                print((vstar_end - vstar_start).detach())
                 advantages[i] += (vstar_end - vstar_start).detach()
             
             # Accumulate losses across segments for this batch item and average advantage
