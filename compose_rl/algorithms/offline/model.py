@@ -102,6 +102,7 @@ class ComposerHFOfflinePolicyLM(ComposerHFCausalLM):
         temperature: float = 1.0,
         num_bins: int = 1,  # Add num_bins parameter
         distributional_value_learning: bool = True,
+        value_learning_mask: bool = False,
         **kwargs: Any,
     ):
         self.loss_type = RegressionOfflineEnum(loss_type)
@@ -113,7 +114,7 @@ class ComposerHFOfflinePolicyLM(ComposerHFCausalLM):
         self.temperature = temperature
         self.num_bins = num_bins  # Store num_bins
         self.distributional_value_learning = distributional_value_learning
-        
+        self.value_learning_mask = value_learning_mask
         super().__init__(**kwargs)
         self.train_metrics = None  # DPOLM does not support eval_forward
         self.val_metrics = {metric.__class__.__name__ : metric for metric in [TestEstimatedRewardLossMetric(), TestImplicitRewardsLossMetric(), TestKLDivergenceLossMetric(), TestSequenceEntropiesLossMetric(), TestTotalLossMetric()]}
@@ -150,6 +151,7 @@ class ComposerHFOfflinePolicyLM(ComposerHFCausalLM):
             eta = self.eta, 
             multistep = self.multistep,
             distributional_value_learning = self.distributional_value_learning,
+            value_learning_mask = self.value_learning_mask,
         )
 
 class ComposerMPTPairwiseOfflinePolicyLM(ComposerMPTCausalLM):

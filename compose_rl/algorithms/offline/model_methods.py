@@ -184,6 +184,7 @@ def offline_loss(
     multistep: bool = False,
     bce: bool = False, 
     distributional_value_learning: bool = True,
+    value_learning_mask: bool = False,
 ):
     # eta: r + eta * bonus (bonus can be used to model things like tool use)
     
@@ -258,6 +259,8 @@ def offline_loss(
             assert outputs['first_num_bins_logits'] is not None, "first_num_bins_logits must be in the batch. called from offline_loss fn"
             losses = (outputs['first_num_bins_logits'][:,:,0] - batch['reward']) ** 2
             losses *= batch['attention_mask']
+            if value_learning_mask:
+                losses *= batch['mask']
         
         # option 2: distributional value learning. given n logits, we predict and the do softmax to get a distribution.
         else: # (distributional_value_learning == True):
@@ -272,7 +275,8 @@ def offline_loss(
 
             # reshape masks to match flattened losses
             losses *= batch['attention_mask'].view(-1)
-
+            if value_learning_mask:
+                losses *= batch['mask'].view(-1)
         # note in this case, you don't need to mask based on the next one, just the true tokens should get a value.
 
     elif loss_type == RegressionOfflineEnum.APO_CRITIC:
